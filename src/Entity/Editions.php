@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EditionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,8 +22,21 @@ class Editions
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $end_date = null;
 
-    #[ORM\Column]
-    private ?int $festival_id = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Festival $festival_id = null;
+
+    /**
+     * @var Collection<int, Schedule>
+     */
+    #[ORM\OneToMany(targetEntity: Schedule::class, mappedBy: 'editions_id', orphanRemoval: true)]
+    private Collection $schedule_id;
+
+    public function __construct()
+    {
+        $this->schedule_id = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -59,14 +74,44 @@ class Editions
         return $this;
     }
 
-    public function getFestivalId(): ?int
+    public function getFestivalId(): ?Festival
     {
         return $this->festival_id;
     }
 
-    public function setFestivalId(int $festival_id): static
+    public function setFestivalId(?Festival $festival_id): static
     {
         $this->festival_id = $festival_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Schedule>
+     */
+    public function getScheduleId(): Collection
+    {
+        return $this->schedule_id;
+    }
+
+    public function addScheduleId(Schedule $scheduleId): static
+    {
+        if (!$this->schedule_id->contains($scheduleId)) {
+            $this->schedule_id->add($scheduleId);
+            $scheduleId->setEditionsId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScheduleId(Schedule $scheduleId): static
+    {
+        if ($this->schedule_id->removeElement($scheduleId)) {
+            // set the owning side to null (unless already changed)
+            if ($scheduleId->getEditionsId() === $this) {
+                $scheduleId->setEditionsId(null);
+            }
+        }
 
         return $this;
     }

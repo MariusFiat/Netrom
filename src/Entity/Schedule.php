@@ -14,19 +14,22 @@ class Schedule
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $artist_id = null;
-
-    #[ORM\Column]
-    private ?int $edition_id = null;
-
-    #[ORM\Column]
-    private ?int $stage_id = null;
-
-    #[ORM\Column]
     private ?\DateTime $start_time = null;
 
     #[ORM\Column]
     private ?\DateTime $end_time = null;
+
+    #[ORM\ManyToOne(inversedBy: 'schedule_id')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Editions $editions_id = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Artist $artist_id = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Stage $stage_id = null;
 
     public function getId(): ?int
     {
@@ -36,42 +39,6 @@ class Schedule
     public function setId(int $id): static
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getArtistId(): ?int
-    {
-        return $this->artist_id;
-    }
-
-    public function setArtistId(int $artist_id): static
-    {
-        $this->artist_id = $artist_id;
-
-        return $this;
-    }
-
-    public function getEditionId(): ?int
-    {
-        return $this->edition_id;
-    }
-
-    public function setEditionId(int $edition_id): static
-    {
-        $this->edition_id = $edition_id;
-
-        return $this;
-    }
-
-    public function getStageId(): ?int
-    {
-        return $this->stage_id;
-    }
-
-    public function setStageId(int $stage_id): static
-    {
-        $this->stage_id = $stage_id;
 
         return $this;
     }
@@ -96,6 +63,42 @@ class Schedule
     public function setEndTime(\DateTime $end_time): static
     {
         $this->end_time = $end_time;
+
+        return $this;
+    }
+
+    public function getEditionsId(): ?Editions
+    {
+        return $this->editions_id;
+    }
+
+    public function setEditionsId(?Editions $editions_id): static
+    {
+        $this->editions_id = $editions_id;
+
+        return $this;
+    }
+
+    public function getArtistId(): ?Artist
+    {
+        return $this->artist_id;
+    }
+
+    public function setArtistId(?Artist $artist_id): static
+    {
+        $this->artist_id = $artist_id;
+
+        return $this;
+    }
+
+    public function getStageId(): ?Stage
+    {
+        return $this->stage_id;
+    }
+
+    public function setStageId(?Stage $stage_id): static
+    {
+        $this->stage_id = $stage_id;
 
         return $this;
     }

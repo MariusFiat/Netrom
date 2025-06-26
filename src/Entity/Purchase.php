@@ -14,16 +14,19 @@ class Purchase
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $user_id = null;
-
-    #[ORM\Column]
-    private ?int $festival_id = null;
-
-    #[ORM\Column]
     private ?bool $is_used = null;
 
-    #[ORM\Column]
-    private ?int $ticket_type_id = null;
+    #[ORM\ManyToOne(inversedBy: 'purchases')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user_id = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Festival $festival_id = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Ticket $ticket_type_id = null;
 
     public function getId(): ?int
     {
@@ -37,29 +40,6 @@ class Purchase
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(int $user_id): static
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getFestivalId(): ?int
-    {
-        return $this->festival_id;
-    }
-
-    public function setFestivalId(int $festival_id): static
-    {
-        $this->festival_id = $festival_id;
-
-        return $this;
-    }
 
     public function isUsed(): ?bool
     {
@@ -73,15 +53,40 @@ class Purchase
         return $this;
     }
 
-    public function getTicketTypeId(): ?int
+    public function getUserId(): ?User
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId(?User $user_id): static
+    {
+        $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getFestivalId(): ?Festival
+    {
+        return $this->festival_id;
+    }
+
+    public function setFestivalId(?Festival $festival_id): static
+    {
+        $this->festival_id = $festival_id;
+
+        return $this;
+    }
+
+    public function getTicketTypeId(): ?Ticket
     {
         return $this->ticket_type_id;
     }
 
-    public function setTicketTypeId(int $ticket_type_id): static
+    public function setTicketTypeId(Ticket $ticket_type_id): static
     {
         $this->ticket_type_id = $ticket_type_id;
 
         return $this;
     }
+
 }
