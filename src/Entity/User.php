@@ -29,7 +29,7 @@ class User
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?UserDetails $user_details_id = null;
+    private ?UserDetails $user_details = null;
 
     /**
      * @var Collection<int, Purchase>
@@ -97,12 +97,12 @@ class User
 
     public function getUserDetailsId(): ?UserDetails
     {
-        return $this->user_details_id;
+        return $this->user_details;
     }
 
-    public function setUserDetailsId(UserDetails $user_details_id): static
+    public function setUserDetailsId(UserDetails $user_details): static
     {
-        $this->user_details_id = $user_details_id;
+        $this->user_details = $user_details;
 
         return $this;
     }
