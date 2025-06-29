@@ -19,7 +19,11 @@
             {% for festival in festivals %}
                 <tr>
                     <td>{{ festival.id }}</td>
-                    <td>{{ festival.name }}</td>
+                    <td>
+                        <a href="{{ path('festival_editions', {id: festival.id}) }}">
+                            {{ festival.name }}
+                        </a>
+                    </td>
                     <td>{{ festival.location }}</td>
                     <!-- Add more cells if you have more fields -->
                 </tr>

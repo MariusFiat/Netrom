@@ -1,0 +1,32 @@
+{% extends 'festival.html.twig' %}
+
+{% block title %}{{ festival.name }} - Editions{% endblock %}
+
+{% block body %}
+    <h1>Editions of {{ festival.name }}</h1>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Edition ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for edition in editions %}
+            <tr>
+                <td>{{ edition.id }}</td>
+                <td>{{ edition.startDate|date('Y-m-d') }}</td>
+                <td>{{ edition.endDate|date('Y-m-d') }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No editions found for this festival.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('list_festivals') }}">← Back to festivals list</a>
+{% endblock %}
