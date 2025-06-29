@@ -44,7 +44,7 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
-        
+
         .editions-container {
             max-width: 900px;
             margin: 40px auto;
@@ -108,7 +108,8 @@
             <tbody>
             {% for edition in editions %}
                 <tr>
-                    <td>{{ edition.id }}</td>
+                    {#  Edition number / start-date / end - date #}
+                    <td>Edition {{ loop.index }}</td>
                     <td>{{ edition.startDate|date('Y-m-d') }}</td>
                     <td>{{ edition.endDate|date('Y-m-d') }}</td>
                 </tr>
