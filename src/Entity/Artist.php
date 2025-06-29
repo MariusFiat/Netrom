@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\ArtistRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Entity\Editions;
 
 #[ORM\Entity(repositoryClass: ArtistRepository::class)]
 class Artist
@@ -18,6 +21,19 @@ class Artist
 
     #[ORM\Column(length: 30)]
     private ?string $music_genre = null;
+
+    #[ORM\ManyToMany(targetEntity: Editions::class, mappedBy: 'lineup')]
+    private ?Collection $editions;
+
+    public function __construct()
+    {
+        $this->editions = new ArrayCollection();
+    }
+
+    public function getEditions(): Collection
+    {
+        return $this->editions;
+    }
 
     public function getId(): ?int
     {

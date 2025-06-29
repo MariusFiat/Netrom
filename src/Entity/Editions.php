@@ -32,9 +32,34 @@ class Editions
     #[ORM\OneToMany(targetEntity: Schedule::class, mappedBy: 'editions_id', orphanRemoval: true)]
     private Collection $schedule_id;
 
+    #[ORM\ManyToMany(targetEntity: Artist::class, inversedBy: 'editions')]
+    #[ORM\JoinTable(name: 'edition_artist')]
+    private ?Collection $lineup;
+
+    public function getLineup(): Collection
+    {
+        return $this->lineup;
+    }
+
+    public function addArtist(Artist $artist): static
+    {
+        if (!$this->lineup->contains($artist)) {
+            $this->lineup->add($artist);
+        }
+
+        return $this;
+    }
+
+    public function removeArtist(Artist $artist): static
+    {
+        $this->lineup->removeElement($artist);
+        return $this;
+    }
+
     public function __construct()
     {
         $this->schedule_id = new ArrayCollection();
+        $this->lineup = new ArrayCollection();
     }
 
 
