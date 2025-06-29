@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Festivals List{% endblock %}
+
+{% block body %}
+    <div class="festival_container">
+        <h1 class="mb-4">Festivals List</h1>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <!-- Add more columns if you have more fields -->
+            </tr>
+            </thead>
+            <tbody>
+            {% for festival in festivals %}
+                <tr>
+                    <td>{{ festival.id }}</td>
+                    <td>{{ festival.name }}</td>
+                    <td>{{ festival.location }}</td>
+                    <!-- Add more cells if you have more fields -->
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">No festivals found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {# Pagination controls #}
+        <div class="navigation">
+            {{ knp_pagination_render(festivals) }}
+        </div>
+    </div>
+{% endblock %}
