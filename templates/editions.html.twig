@@ -1,32 +1,125 @@
+{#{% extends 'festival.html.twig' %}#}
+
+{#{% block title %}{{ festival.name }} - Editions{% endblock %}#}
+
+{#{% block body %}#}
+{#    <h1>Editions of {{ festival.name }}</h1>#}
+
+{#    <table class="table table-bordered">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>Edition ID</th>#}
+{#            <th>Start Date</th>#}
+{#            <th>End Date</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for edition in editions %}#}
+{#            <tr>#}
+{#                <td>{{ edition.id }}</td>#}
+{#                <td>{{ edition.startDate|date('Y-m-d') }}</td>#}
+{#                <td>{{ edition.endDate|date('Y-m-d') }}</td>#}
+{#            </tr>#}
+{#        {% else %}#}
+{#            <tr>#}
+{#                <td colspan="3">No editions found for this festival.</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+
+{#    <a href="{{ path('list_festivals') }}">← Back to festivals list</a>#}
+{#{% endblock %}#}
+
+{#PAGE WITH CSS#}
 {% extends 'festival.html.twig' %}
 
 {% block title %}{{ festival.name }} - Editions{% endblock %}
 
 {% block body %}
-    <h1>Editions of {{ festival.name }}</h1>
+    <style>
+        body {
+            background-color: #228B22;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .editions-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fefefe;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
 
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Edition ID</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for edition in editions %}
-            <tr>
-                <td>{{ edition.id }}</td>
-                <td>{{ edition.startDate|date('Y-m-d') }}</td>
-                <td>{{ edition.endDate|date('Y-m-d') }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">No editions found for this festival.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        .editions-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #333;
+        }
 
-    <a href="{{ path('list_festivals') }}">← Back to festivals list</a>
+        .editions-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .editions-table th,
+        .editions-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        .editions-table thead {
+            background-color: #f8f9fa;
+        }
+
+        .editions-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="editions-container">
+        <h1>Editions of {{ festival.name }}</h1>
+
+        <table class="editions-table">
+            <thead>
+            <tr>
+                <th>Edition ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for edition in editions %}
+                <tr>
+                    <td>{{ edition.id }}</td>
+                    <td>{{ edition.startDate|date('Y-m-d') }}</td>
+                    <td>{{ edition.endDate|date('Y-m-d') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">No editions found for this festival.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('list_festivals') }}" class="back-link">← Back to festivals list</a>
+    </div>
 {% endblock %}
