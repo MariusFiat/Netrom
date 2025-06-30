@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class EditionsController extends AbstractController
 {
+    private int $ItemsPerPage = 3;
+
     //Metoda de afisare editii atunci cand apas pe un festival
     #[Route('/festival/{id}/editions', name: 'festival_editions', methods: ['GET'])]
     public function showEditions(
@@ -33,7 +35,7 @@ final class EditionsController extends AbstractController
         $editions = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            3
+            $this->ItemsPerPage
         );
 
         return $this->render('editions.html.twig', [
@@ -41,4 +43,6 @@ final class EditionsController extends AbstractController
             'festival' => $festival, //Am nevoie pentru a scrie detaliile precum numele festivalului urmat de editii:
         ]);
     }
+
+    //Metoda pentru delete
 }
