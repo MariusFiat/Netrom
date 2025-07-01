@@ -86,7 +86,7 @@
             {% for purchase in purchases %}
                 <div class="card purchase-card">
                     <div class="card-header purchase-card-header d-flex justify-content-between align-items-center">
-                        <h3 class="mb-0">Purchase #{{ purchase.id }}</h3>
+                        <h3 class="mb-0">Purchase #{{ loop.index }}</h3>
                         <span class="purchase-status {{ purchase.isUsed ? 'status-used' : 'status-unused' }}">
                             {{ purchase.isUsed ? 'USED' : 'UNUSED' }}
                         </span>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Editions;
 use App\Entity\Festival;
+use App\Entity\Purchase;
 use App\Repository\EditionsRepository;
 use App\Repository\FestivalRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,20 +59,23 @@ final class FestivalController extends AbstractController
             throw $this->createNotFoundException('Festival not found');
         }
 
-        // Get all editions associated with this festival
-        $editions = $editionsRepository->findBy(['festival_id' => $festival]);
+        // First delete all purchases associated with this festival
+        $purchases = $em->getRepository(Purchase::class)->findBy(['festival_id' => $festival]);
+        foreach ($purchases as $purchase) {
+            $em->remove($purchase);
+        }
 
-        // Remove each edition individually
+        // Then delete all editions associated with this festival
+        $editions = $editionsRepository->findBy(['festival_id' => $festival]);
         foreach ($editions as $edition) {
             $em->remove($edition);
         }
 
-        // Then remove the festival
+        // Finally delete the festival
         $em->remove($festival);
         $em->flush();
 
         $this->addFlash('success', 'Festival deleted successfully');
-
         return $this->redirectToRoute('list_festivals');
     }
 }
