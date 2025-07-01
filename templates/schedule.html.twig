@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Schedule for {{ edition.festivalId.name }} - Edition {{ edition.id }}{% endblock %}
+
+{% block body %}
+    {% include 'navbar.html.twig' %}
+    <style>
+        body {
+            background-color: #228B22;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .schedule-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .schedule-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .schedule-day {
+            margin-bottom: 40px;
+        }
+
+        .day-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .schedule-table th {
+            background-color: #f8f9fa;
+        }
+
+        .schedule-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .schedule-table tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-link:hover {
+            background-color: #5a6268;
+        }
+    </style>
+
+    <div class="schedule-container">
+        <h1>Schedule for {{ edition.festivalId.name }} - Edition {{ edition.id }}</h1>
+        <h3>{{ edition.startDate|date('Y-m-d') }} to {{ edition.endDate|date('Y-m-d') }}</h3>
+
+        {% set currentDay = '' %}
+        {% for schedule in schedules %}
+            {% set scheduleDay = schedule.startTime|date('Y-m-d') %}
+            {% if scheduleDay != currentDay %}
+                {% set currentDay = scheduleDay %}
+                <div class="schedule-day">
+                <h2 class="day-header">{{ schedule.startTime|date('l, F j, Y') }}</h2>
+                <table class="schedule-table">
+                <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Artist</th>
+                    <th>Stage</th>
+                    <th>Genre</th>
+                </tr>
+                </thead>
+                <tbody>
+            {% endif %}
+            <tr>
+                <td>{{ schedule.startTime|date('H:i') }} - {{ schedule.endTime|date('H:i') }}</td>
+                <td>{{ schedule.artistId.name }}</td>
+                <td>{{ schedule.stageId.name }}</td>
+                <td>{{ schedule.artistId.musicGenre }}</td>
+            </tr>
+            {% if loop.last or schedules[loop.index].startTime|date('Y-m-d') != currentDay %}
+                </tbody>
+                </table>
+                </div>
+            {% endif %}
+        {% else %}
+            <p>No schedule available for this edition.</p>
+        {% endfor %}
+
+        <a href="{{ path('festival_editions', {'id': edition.festivalId.id}) }}" class="back-link">
+            ← Back to Editions
+        </a>
+    </div>
+{% endblock %}

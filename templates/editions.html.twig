@@ -108,7 +108,7 @@
             </thead>
             <tbody>
             {% for edition in editions %}
-                <tr>
+                <tr onclick="window.location='{{ path('edition_schedule', {'id': loop.index}) }}'" style="cursor: pointer;">
                     {# Edition number / Start-Date / End-Date#}
                     <td>Edition {{ loop.index }}</td>
                     <td>{{ edition.startDate|date('Y-m-d') }}</td>
