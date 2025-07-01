@@ -21,17 +21,28 @@ class UserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
-        $query = $userRepository->createQueryBuilder('u')
-            ->getQuery();
+        $searchTerm = $request->query->get('q');
+
+        $queryBuilder = $userRepository->createQueryBuilder('u')
+            ->leftJoin('u.userDetails', 'ud');
+
+        if ($searchTerm) {
+            $queryBuilder
+                ->where('u.email LIKE :searchTerm')
+                ->orWhere('ud.first_name LIKE :searchTerm')
+                ->orWhere('ud.last_name LIKE :searchTerm')
+                ->setParameter('searchTerm', '%'.$searchTerm.'%');
+        }
 
         $users = $paginator->paginate(
-            $query,
+            $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
             $this->itemsPerPage
         );
 
         return $this->render('user_list.html.twig', [
             'users' => $users,
+            'searchTerm' => $searchTerm
         ]);
     }
 
@@ -56,18 +67,15 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('User not found');
         }
 
-        // Verify CSRF token
         $submittedToken = $request->request->get('_token');
         if (!$this->isCsrfTokenValid('delete'.$id, $submittedToken)) {
             throw $this->createAccessDeniedException('Invalid CSRF token');
         }
 
-        // First remove the user details if they exist
         if ($user->getUserDetails() !== null) {
             $em->remove($user->getUserDetails());
         }
 
-        // Then remove the user
         $em->remove($user);
         $em->flush();
 
