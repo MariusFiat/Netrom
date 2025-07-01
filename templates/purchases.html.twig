@@ -111,7 +111,7 @@
                                         <strong>Type:</strong> {{ purchase.ticketTypeId.type }}
                                     </li>
                                     <li class="list-group-item">
-                                        <strong>Price:</strong> ${{ purchase.ticketTypeId.price|number_format(2) }}
+                                        <strong>Price:</strong> {{ purchase.ticketTypeId.price|number_format(2) }} lei
                                     </li>
                                 </ul>
                             </div>
