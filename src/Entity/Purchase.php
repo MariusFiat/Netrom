@@ -24,7 +24,7 @@ class Purchase
     #[ORM\JoinColumn(nullable: false)]
     private ?Festival $festival_id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ticket $ticket_type_id = null;
 
