@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class User
     #[ORM\Column(length: 100)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 36)]
+    #[ORM\Column(length: 70)]
     private ?string $password = null;
 
     #[ORM\Column(length: 36)]
@@ -27,9 +27,9 @@ class User
     #[ORM\Column(length: 20)]
     private ?string $role = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?UserDetails $user_details = null;
+    #[ORM\OneToOne(targetEntity: UserDetails::class)]
+    #[ORM\JoinColumn(name: 'user_details_id', referencedColumnName: 'id')]
+    private ?UserDetails $userDetails = null;
 
     /**
      * @var Collection<int, Purchase>
@@ -95,15 +95,14 @@ class User
         return $this;
     }
 
-    public function getUserDetailsId(): ?UserDetails
+    public function getUserDetails(): ?UserDetails
     {
-        return $this->user_details;
+        return $this->userDetails;
     }
 
-    public function setUserDetailsId(UserDetails $user_details): static
+    public function setUserDetails(?UserDetails $userDetails): static
     {
-        $this->user_details = $user_details;
-
+        $this->userDetails = $userDetails;
         return $this;
     }
 

@@ -61,7 +61,7 @@ final class FestivalController extends AbstractController
         // Get all editions associated with this festival
         $editions = $editionsRepository->findBy(['festival_id' => $festival]);
 
-        // Remove all editions first
+        // Remove each edition individually
         foreach ($editions as $edition) {
             $em->remove($edition);
         }
