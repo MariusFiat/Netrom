@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -81,5 +82,27 @@ class UserController extends AbstractController
 
         $this->addFlash('success', 'User deleted successfully');
         return $this->redirectToRoute('user_list');
+    }
+
+    #[Route('/users/edit/{id}', name: 'user_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        Request $request,
+        User $user,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'User updated successfully!');
+            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+        }
+
+        return $this->render('edit_user.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 }
