@@ -56,6 +56,33 @@ class Editions
         return $this;
     }
 
+    public function addLineup(Artist $artist): self
+    {
+        if (!$this->lineup->contains($artist)) {
+            $this->lineup[] = $artist;
+        }
+        return $this;
+    }
+
+    public function setLineup(iterable $artists): self
+    {
+        // Clear the current collection
+        $this->lineup->clear();
+
+        // Add only the selected artists
+        foreach ($artists as $artist) {
+            $this->addLineup($artist);
+        }
+
+        return $this;
+    }
+    public function removeLineup(Artist $artist): self
+    {
+        $this->lineup->removeElement($artist);
+        return $this;
+    }
+
+
     public function __construct()
     {
         $this->schedule_id = new ArrayCollection();

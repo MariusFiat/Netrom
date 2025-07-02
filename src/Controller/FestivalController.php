@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Editions;
 use App\Entity\Festival;
 use App\Entity\Purchase;
+use App\Form\FestivalForm;
 use App\Repository\EditionsRepository;
 use App\Repository\FestivalRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,26 +18,32 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Form\Festival\FestivalForm;
 
 final class FestivalController extends AbstractController
 {
     private int $ItemsPerPage = 10;
     #[Route('/festival', name: 'list_festivals', methods: ['GET'])]
     public function index(
-        FestivalRepository $festivalRepository,  //* Obiect prin care am acces la datele din baza de date
+        FestivalRepository $festivalRepository,
         PaginatorInterface $paginator,
         Request $request
-
     ): Response {
-        $query = $festivalRepository->createQueryBuilder('f')->getQuery();  //* query-ul pentru selectia datelor
+        $query = $festivalRepository->createQueryBuilder('f');
 
-        // Paginate the query
+        // Add search functionality
+        if ($searchTerm = $request->query->get('q')) {
+            $query
+                ->where('f.name LIKE :searchTerm OR f.location LIKE :searchTerm')
+                ->setParameter('searchTerm', '%'.$searchTerm.'%');
+        }
+
+        $query = $query->getQuery();
+
         $festivals = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), // Mereu la apelul metodei, saltul se face la prima pagina
+            $request->query->getInt('page', 1),
             $this->ItemsPerPage
-        ); //* variabila in care salvez datele din baza de date, dar si paginarea cu maxim 10 inregistrari pe pagina
+        );
 
         return $this->render('festival.html.twig', [
             'festivals' => $festivals,
@@ -101,6 +108,26 @@ final class FestivalController extends AbstractController
         }
 
         return $this->render('add_festival.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+//    Edit method:
+    #[Route('/festival/{id}/edit', name: 'edit_festival', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Festival $festival, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(FestivalForm::class, $festival);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Festival updated successfully!');
+            return $this->redirectToRoute('list_festivals', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('edit_festival.html.twig', [
+            'festival' => $festival,
             'form' => $form->createView(),
         ]);
     }
