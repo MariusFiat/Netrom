@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -77,5 +80,34 @@ final class FestivalController extends AbstractController
 
         $this->addFlash('success', 'Festival deleted successfully');
         return $this->redirectToRoute('list_festivals');
+    }
+
+    //* Create form
+    #[Route('/festival/add', name: 'add_festival')]
+    public function new(Request $request, EntityManagerInterface $em,): Response
+    {
+        $newFestival = new Festival();
+
+        $form = $this->createFormBuilder($newFestival)
+            ->add('name', TextType::class, [
+                'label' => 'Festival Name'  // This is the human-readable label
+            ])
+            ->add('location', TextType::class)
+            ->add('save', SubmitType::class, ['label' => 'Create Festival'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($newFestival);
+            $em->flush();
+
+            $this->addFlash('success', 'Festival created successfully!');
+            return $this->redirectToRoute('list_festivals');
+        }
+
+        return $this->render('add_festival.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

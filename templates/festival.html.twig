@@ -1,50 +1,3 @@
-{#{% extends 'base.html.twig' %}#}
-
-{#{% block title %}Festivals List{% endblock %}#}
-
-{#{% block body %}#}
-{#    <div class="festival_container">#}
-{#        <h1 class="mb-4">Festivals List</h1>#}
-
-{#        <table class="table table-striped">#}
-{#            <thead>#}
-{#            <tr>#}
-{#                <th>ID</th>#}
-{#                <th>Name</th>#}
-{#                <th>Location</th>#}
-{#                <!-- Add more columns if you have more fields -->#}
-{#            </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#            {% for festival in festivals %}#}
-{#                <tr>#}
-{#                    <td>{{ festival.id }}</td>#}
-{#                    <td>#}
-{#                        <a href="{{ path('festival_editions', {id: festival.id}) }}">#}
-{#                            {{ festival.name }}#}
-{#                        </a>#}
-{#                    </td>#}
-{#                    <td>{{ festival.location }}</td>#}
-{#                    <!-- Add more cells if you have more fields -->#}
-{#                </tr>#}
-{#            {% else %}#}
-{#                <tr>#}
-{#                    <td colspan="3" class="text-center">No festivals found</td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-
-{#        #}{# Pagination controls #}
-{#        <div class="navigation">#}
-{#            {{ knp_pagination_render(festivals) }}#}
-{#        </div>#}
-{#    </div>#}
-{#{% endblock %}#}
-
-
-{# PAGE WITH CSS #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Festivals List{% endblock %}
@@ -52,6 +5,7 @@
 {% block body %}
     {% include 'navbar.html.twig' %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <style>
         body {
@@ -68,6 +22,8 @@
             background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            padding-bottom: 80px; /* Space for the floating button */
         }
 
         .festival-container h1 {
@@ -111,6 +67,44 @@
             margin-top: 20px;
             text-align: center;
         }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .add-festival-btn {
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-festival-btn:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
     </style>
 
     <div class="festival-container">
@@ -134,10 +128,7 @@
                             {{ festival.name }}
                         </a>
                     </td>
-                    <td>
-                        {{ festival.location }}
-
-                    </td>
+                    <td>{{ festival.location }}</td>
                     <td>
                         <form action="{{ path('delete_festival', {id: festival.id}) }}" method="post" class="d-inline">
                             <input type="hidden" name="_method" value="DELETE">
@@ -150,7 +141,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3" class="text-center">No festivals found</td>
+                    <td colspan="4" class="text-center">No festivals found</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -159,5 +150,9 @@
         <div class="navigation">
             {{ knp_pagination_render(festivals) }}
         </div>
+
+        <a href="{{ path('add_festival') }}" class="add-festival-btn" title="Add New Festival">
+            <i class="bi bi-plus"></i>
+        </a>
     </div>
 {% endblock %}
