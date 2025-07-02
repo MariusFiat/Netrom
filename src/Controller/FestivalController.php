@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Form\Festival\FestivalForm;
 
 final class FestivalController extends AbstractController
 {
@@ -88,14 +89,7 @@ final class FestivalController extends AbstractController
     {
         $newFestival = new Festival();
 
-        $form = $this->createFormBuilder($newFestival)
-            ->add('name', TextType::class, [
-                'label' => 'Festival Name'  // This is the human-readable label
-            ])
-            ->add('location', TextType::class)
-            ->add('save', SubmitType::class, ['label' => 'Create Festival'])
-            ->getForm();
-
+        $form = $this->createForm(FestivalForm::class, $newFestival);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
