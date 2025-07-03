@@ -21,13 +21,16 @@
                     <a class="nav-link {{ app.request.get('_route') starts with 'artist' ? 'active' : '' }}" href="{{ path('artist_list') }}">Artists</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ app.request.get('_route') starts with 'stage' ? 'active' : '' }}" href="{{ path('stage_list') }}">Stages</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ app.request.get('_route') starts with 'user' ? 'active' : '' }}" href="{{ path('user_list') }}">Users</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>#}
-{#                </li>#}
+                {# <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                </li> #}
             </ul>
         </div>
     </div>
@@ -40,4 +43,4 @@
         background-color: rgba(40, 167, 69, 0.1);
         border-radius: 4px;
     }
-</style>
+</style>s
