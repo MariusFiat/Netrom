@@ -35,47 +35,34 @@
             margin-bottom: 1.5rem;
         }
 
-        .form-control {
-            padding: 10px 15px;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-        }
-
-        .btn-primary {
-            background-color: #228B22;
-            border-color: #228B22;
+        .btn-auth {
             padding: 12px 24px;
             font-weight: 500;
             width: 100%;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
-        .btn-primary:hover {
+        .btn-login {
+            background-color: #228B22;
+            border: 2px solid #228B22;
+            color: white;
+        }
+
+        .btn-login:hover {
             background-color: #1c7a1c;
             border-color: #1c7a1c;
         }
 
-        .auth-footer {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .auth-footer a {
+        .btn-register {
+            background-color: transparent;
+            border: 2px solid #228B22;
             color: #228B22;
-            text-decoration: none;
-            font-weight: 500;
         }
 
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
+        .btn-register:hover {
+            background-color: #f0f8ff;
         }
     </style>
 
@@ -108,13 +95,13 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button class="btn btn-primary" type="submit">
-                Sign in
+            <button class="btn-auth btn-login" type="submit">
+                <i class="bi bi-box-arrow-in-right"></i> Sign in
             </button>
 
-            <div class="auth-footer">
-{#                <p>Don't have an account? <a href="{{ path('app_register') }}">Register here</a></p>#}
-            </div>
+            <a href="{{ path('app_register') }}" class="btn-auth btn-register">
+                <i class="bi bi-person-plus"></i> Create Account
+            </a>
         </form>
     </div>
 
