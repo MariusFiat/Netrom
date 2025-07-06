@@ -28,6 +28,10 @@ final class FestivalController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $query = $festivalRepository->createQueryBuilder('f');
 
         // Add search functionality
@@ -59,6 +63,10 @@ final class FestivalController extends AbstractController
         EntityManagerInterface $em,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $submittedToken = $request->request->get('_token');
         if (!$this->isCsrfTokenValid('delete_festival'.$id, $submittedToken)) {
             throw $this->createAccessDeniedException('Invalid CSRF token');
@@ -94,6 +102,10 @@ final class FestivalController extends AbstractController
     #[Route('/festival/add', name: 'add_festival')]
     public function new(Request $request, EntityManagerInterface $em,): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $newFestival = new Festival();
 
         $form = $this->createForm(FestivalForm::class, $newFestival);
@@ -116,6 +128,10 @@ final class FestivalController extends AbstractController
     #[Route('/festival/{id}/edit', name: 'edit_festival', methods: ['GET', 'POST'])]
     public function edit(Request $request, Festival $festival, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(FestivalForm::class, $festival);
         $form->handleRequest($request);
 

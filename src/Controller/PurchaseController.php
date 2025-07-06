@@ -12,6 +12,10 @@ class PurchaseController extends AbstractController
     #[Route('/user/{id}/purchases', name: 'user_purchases')]
     public function index(User $user): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         // Get all purchases for this user
         $purchases = $user->getPurchases();
 

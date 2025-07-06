@@ -22,6 +22,10 @@ class ArtistController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $searchTerm = $request->query->get('q');
 
         $queryBuilder = $artistRepository->createQueryBuilder('a');
@@ -50,6 +54,10 @@ class ArtistController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $artist = new Artist();
         $form = $this->createForm(ArtistTypeForm::class, $artist);
         $form->handleRequest($request);
@@ -74,6 +82,10 @@ class ArtistController extends AbstractController
         EntityManagerInterface $em,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $artist = $artistRepository->find($id);
 
         if (!$artist) {
@@ -103,6 +115,10 @@ class ArtistController extends AbstractController
         Artist $artist,
         EntityManagerInterface $entityManager
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(ArtistTypeForm::class, $artist);
         $form->handleRequest($request);
 

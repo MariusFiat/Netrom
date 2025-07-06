@@ -22,6 +22,10 @@ class UserController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $searchTerm = $request->query->get('q');
 
         $queryBuilder = $userRepository->createQueryBuilder('u')
@@ -50,6 +54,10 @@ class UserController extends AbstractController
     #[Route('/users/{id}', name: 'user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('User_details.html.twig', [
             'user' => $user,
         ]);
@@ -62,6 +70,10 @@ class UserController extends AbstractController
         EntityManagerInterface $em,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $user = $userRepository->find($id);
 
         if (!$user) {
@@ -87,6 +99,10 @@ class UserController extends AbstractController
     #[Route('/users/edit/{id}', name: 'user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 

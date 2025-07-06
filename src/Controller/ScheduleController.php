@@ -13,6 +13,10 @@ class ScheduleController extends AbstractController
     #[Route('/edition/{id}/schedule', name: 'edition_schedule')]
     public function index(Editions $edition, ScheduleRepository $scheduleRepository): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         // Get all schedules for this edition, ordered by start time
         $schedules = $scheduleRepository->findBy(
             ['editions_id' => $edition],

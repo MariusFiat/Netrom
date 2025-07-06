@@ -22,6 +22,10 @@ class StageController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $searchTerm = $request->query->get('q');
 
         $queryBuilder = $stageRepository->createQueryBuilder('s')
@@ -48,6 +52,10 @@ class StageController extends AbstractController
     #[Route('/stages/add', name: 'add_stage', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $stage = new Stage();
         $form = $this->createForm(StageForm::class, $stage);
         $form->handleRequest($request);
@@ -70,6 +78,10 @@ class StageController extends AbstractController
     #[Route('stages/{id}/edit', name: 'stage_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Stage $stage, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(StageForm::class, $stage);
         $form->handleRequest($request);
 
@@ -94,6 +106,10 @@ class StageController extends AbstractController
         EntityManagerInterface $entityManager,
         CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $token = new CsrfToken('delete-stage', $request->request->get('_token'));
 
         if ($csrfTokenManager->isTokenValid($token)) {

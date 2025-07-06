@@ -25,6 +25,10 @@ final class EditionsController extends AbstractController
         PaginatorInterface $paginator,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $festival = $festivalRepository->find($id);
 
         $query = $editionsRepository->createQueryBuilder('e')
@@ -53,6 +57,10 @@ final class EditionsController extends AbstractController
         FestivalRepository $festivalRepository,
         EntityManagerInterface $em
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $festival = $festivalRepository->find($festival_id);
 
         if (!$festival) {
@@ -86,6 +94,10 @@ final class EditionsController extends AbstractController
         EntityManagerInterface $em,
         Request $request
     ): Response {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $submittedToken = $request->request->get('_token');
         if (!$this->isCsrfTokenValid('delete_edition'.$id, $submittedToken)) {
             throw $this->createAccessDeniedException('Invalid CSRF token');
@@ -116,6 +128,10 @@ final class EditionsController extends AbstractController
         EntityManagerInterface $em
     ): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         $edition = $editionsRepository->find($id);
 
         if (!$edition) {

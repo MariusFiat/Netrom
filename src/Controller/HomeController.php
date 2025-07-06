@@ -12,6 +12,10 @@ class HomeController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
         // Get some statistics to display on the home page (optional)
         $stats = [
             'total_users' => 42,    // You would query your database here
