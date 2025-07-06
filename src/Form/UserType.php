@@ -26,17 +26,19 @@ class UserType extends AbstractType
                 ],
                 'label' => 'Email Address'
             ])
-            ->add('role', ChoiceType::class, [
+            ->add('mainRole', ChoiceType::class, [
+                'mapped' => false, // This field isn't directly mapped to the entity
+                'data' => $builder->getData()->getMainRole(),
                 'attr' => ['class' => 'form-control'],
                 'choices' => [
                     'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN',
-                    'Editor' => 'ROLE_EDITOR'
+                    'Editor' => 'ROLE_EDITOR',
+                    'Admin' => 'ROLE_ADMIN'
                 ],
                 'label' => 'User Role'
             ])
             ->add('userDetails', UserDetailsType::class, [
-                'label' => false, // We'll handle labels in the details form
+                'label' => false,
                 'required' => false
             ]);
     }

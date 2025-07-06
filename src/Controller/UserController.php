@@ -85,15 +85,16 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/edit/{id}', name: 'user_edit', methods: ['GET', 'POST'])]
-    public function edit(
-        Request $request,
-        User $user,
-        EntityManagerInterface $entityManager
-    ): Response {
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle roles separately
+            $selectedRole = $form->get('mainRole')->getData();
+            $user->setRoles([$selectedRole]);
+
             $entityManager->flush();
 
             $this->addFlash('success', 'User updated successfully!');

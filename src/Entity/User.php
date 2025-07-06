@@ -89,14 +89,15 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
+//        $roles = $this->roles;
+        // Guarantee every user has ROLE_USER
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
 
-    public function setRoles(array $role): static
+    public function setRoles(array $roles): self
     {
-        $this->roles = $role;
-
+        $this->roles = $roles;
         return $this;
     }
 
@@ -150,5 +151,28 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         // TODO: Implement getUserIdentifier() method.
         return (string) $this->email;
+    }
+
+    //////
+    ///
+    ///
+    public function getMainRole(): string
+    {
+        if (in_array('ROLE_ADMIN', $this->roles)) {
+            return 'ROLE_ADMIN';
+        }
+        if (in_array('ROLE_EDITOR', $this->roles)) {
+            return 'ROLE_EDITOR';
+        }
+        return 'ROLE_USER';
+    }
+
+    public function setMainRole(string $role): void
+    {
+        $this->roles = [$role];
+        // Ensure ROLE_USER is always included for non-admin roles
+        if ($role !== 'ROLE_ADMIN' && !in_array('ROLE_USER', $this->roles)) {
+            $this->roles[] = 'ROLE_USER';
+        }
     }
 }

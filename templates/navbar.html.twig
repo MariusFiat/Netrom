@@ -28,9 +28,21 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
-                {# <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
-                </li> #}
+                {% if app.user %}
+                    <li class="nav-item">
+                        <span class="nav-link text-light">Welcome, {{ app.user.userIdentifier }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'app_logout' ? 'active' : '' }}" href="{{ path('app_logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'app_login' ? 'active' : '' }}" href="{{ path('app_login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'app_register' ? 'active' : '' }}" href="{{ path('app_register') }}">Register</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -43,4 +55,4 @@
         background-color: rgba(40, 167, 69, 0.1);
         border-radius: 4px;
     }
-</style>s
+</style>

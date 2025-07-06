@@ -150,7 +150,7 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
+                    <td>{{ user.getMainRole() }}</td>
                     <td>{{ user.userDetails.firstName ?? 'N/A' }}</td>
                     <td>{{ user.userDetails.lastName ?? 'N/A' }}</td>
                     <td>

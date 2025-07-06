@@ -38,14 +38,14 @@ class UserDetailsType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Registration Date',
                 'required' => false,
-                'disabled' => true // This field shouldn't be editable
+                'disabled' => true
             ])
             ->add('lastConnection', DateType::class, [
                 'widget' => 'single_text',
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Last Connection',
                 'required' => false,
-                'disabled' => true // This field shouldn't be editable
+                'disabled' => true
             ]);
     }
 
