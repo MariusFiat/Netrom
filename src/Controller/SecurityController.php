@@ -46,48 +46,46 @@ class SecurityController extends AbstractController
         EntityManagerInterface $entityManager,
         Security $security
     ): Response {
-        // Redirect if already logged in
-//        if ($this->getUser()) {
-//            return $this->redirectToRoute('app_home');
-//        }
-
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                // Create and set UserDetails
-                $userDetails = new UserDetails();
-                $userDetails
-                    ->setFirstName('')
-                    ->setLastName('')
-                    ->setAge(0)
-                    ->setRegisterDate(new \DateTime())
-                    ->setLastConnection(new \DateTime());
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                try {
+                    // Create UserDetails
+                    $userDetails = new UserDetails();
+                    $userDetails
+                        ->setFirstName($form->get('firstName')->getData())
+                        ->setLastName($form->get('lastName')->getData())
+                        ->setAge($form->get('age')->getData())
+                        ->setRegisterDate(new \DateTime())
+                        ->setLastConnection(new \DateTime());
 
-                $user
-                    ->setPassword($passwordHasher->hashPassword(
-                        $user,
-                        $form->get('plainPassword')->getData()
-                    ))
-                    ->setToken(bin2hex(random_bytes(18)))
-                    ->setRoles(['ROLE_USER'])
-                    ->setUserDetails($userDetails);
+                    // Configure User
+                    $user
+                        ->setPassword($passwordHasher->hashPassword(
+                            $user,
+                            $form->get('plainPassword')->getData()
+                        ))
+                        ->setToken(bin2hex(random_bytes(18)))
+                        ->setRoles(['ROLE_USER'])
+                        ->setUserDetails($userDetails);
 
-                // Persist both entities
-                $entityManager->persist($userDetails);
-                $entityManager->persist($user);
-                $entityManager->flush();
+                    $entityManager->persist($userDetails);
+                    $entityManager->persist($user);
+                    $entityManager->flush();
 
-                return $security->login($user, 'form_login', 'main');
+                    // Auto-login after registration
+                    return $security->login($user, 'form_login', 'main');
 
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Registration failed: '.$e->getMessage());
-            }
-        } elseif ($form->isSubmitted() && !$form->isValid()) {
-            foreach ($form->getErrors(true) as $error) {
-                $this->addFlash('error', $error->getMessage());
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Registration failed. Please try again.');
+                }
+            } else {
+                foreach ($form->getErrors(true) as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
             }
         }
 
@@ -96,3 +94,8 @@ class SecurityController extends AbstractController
         ]);
     }
 }
+
+// Redirect if already logged in
+//        if ($this->getUser()) {
+//            return $this->redirectToRoute('app_home');
+//        }

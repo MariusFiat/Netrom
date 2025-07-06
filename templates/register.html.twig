@@ -107,21 +107,27 @@
             <div class="alert alert-danger">{{ flash_error }}</div>
         {% endfor %}
 
-        {{ form_start(registrationForm, {'attr': {'class': 'needs-validation'}}) }}
+        {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
         <h3 class="section-title">Account Information</h3>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     {{ form_label(registrationForm.email) }}
-                    {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_widget(registrationForm.email, {'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'your@email.com'
+                    }}) }}
                     <div class="form-errors">{{ form_errors(registrationForm.email) }}</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     {{ form_label(registrationForm.plainPassword) }}
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'At least 6 characters'
+                    }}) }}
                     <div class="form-errors">{{ form_errors(registrationForm.plainPassword) }}</div>
                 </div>
             </div>
@@ -131,30 +137,35 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="first_name" class="form-label">First Name</label>
-                    <input type="text" id="first_name" name="first_name" class="form-control" required>
+                    {{ form_label(registrationForm.firstName) }}
+                    {{ form_widget(registrationForm.firstName, {'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'First name'
+                    }}) }}
+                    <div class="form-errors">{{ form_errors(registrationForm.firstName) }}</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="last_name" class="form-label">Last Name</label>
-                    <input type="text" id="last_name" name="last_name" class="form-control" required>
+                    {{ form_label(registrationForm.lastName) }}
+                    {{ form_widget(registrationForm.lastName, {'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Last name'
+                    }}) }}
+                    <div class="form-errors">{{ form_errors(registrationForm.lastName) }}</div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="age" class="form-label">Age</label>
-                    <input type="number" id="age" name="age" class="form-control" required min="13">
+                    {{ form_label(registrationForm.age) }}
+                    {{ form_widget(registrationForm.age, {'attr': {
+                        'class': 'form-control',
+                        'placeholder': 'Your age',
+                        'min': 13
+                    }}) }}
+                    <div class="form-errors">{{ form_errors(registrationForm.age) }}</div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group form-check">
-            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
-            {{ form_label(registrationForm.agreeTerms, null, {
-                'label_attr': {'class': 'form-check-label'},
-            }) }}
-            <div class="form-errors">{{ form_errors(registrationForm.agreeTerms) }}</div>
         </div>
 
         <button type="submit" class="btn-auth btn-register">
