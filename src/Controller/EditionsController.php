@@ -12,12 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class EditionsController extends AbstractController
 {
     private int $ItemsPerPage = 2;
 
     #[Route('/festival/{id}/editions', name: 'festival_editions', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function showEditions(
         int $id,
         EditionsRepository $editionsRepository,
@@ -51,6 +53,8 @@ final class EditionsController extends AbstractController
     }
 
     #[Route('/festival/{festival_id}/edition/add', name: 'add_edition', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function addEdition(
         int $festival_id,
         Request $request,
@@ -88,6 +92,8 @@ final class EditionsController extends AbstractController
     }
 
     #[Route('/edition/delete/{id}', name: 'delete_edition', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function delete(
         int $id,
         EditionsRepository $editionsRepository,
@@ -121,6 +127,8 @@ final class EditionsController extends AbstractController
     }
 
     #[Route('/edition/edit/{id}', name: 'edit_edition', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function edit(
         int $id,
         Request $request,

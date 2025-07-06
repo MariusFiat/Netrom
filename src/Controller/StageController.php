@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class StageController extends AbstractController
 {
@@ -50,6 +51,8 @@ class StageController extends AbstractController
     }
 
     #[Route('/stages/add', name: 'add_stage', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         if (!$this->getUser()) { //block any access without login
@@ -76,6 +79,8 @@ class StageController extends AbstractController
     }
 
     #[Route('stages/{id}/edit', name: 'stage_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function edit(Request $request, Stage $stage, EntityManagerInterface $entityManager): Response
     {
         if (!$this->getUser()) { //block any access without login
@@ -100,6 +105,8 @@ class StageController extends AbstractController
     }
 
     #[Route('stages/{id}', name: 'stage_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function delete(
         Request $request,
         Stage $stage,

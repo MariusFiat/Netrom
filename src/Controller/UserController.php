@@ -11,12 +11,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserController extends AbstractController
 {
     private int $itemsPerPage = 10;
 
     #[Route('/users', name: 'user_list', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function list(
         UserRepository $userRepository,
         PaginatorInterface $paginator,
@@ -64,6 +66,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/delete/{id}', name: 'user_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(
         int $id,
         UserRepository $userRepository,
@@ -97,6 +100,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/edit/{id}', name: 'user_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if (!$this->getUser()) { //block any access without login

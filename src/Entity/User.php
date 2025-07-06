@@ -89,7 +89,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
-//        $roles = $this->roles;
+        $roles = $this->roles;
         // Guarantee every user has ROLE_USER
         $roles[] = 'ROLE_USER';
         return array_unique($roles);

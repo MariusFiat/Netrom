@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ArtistTypeForm;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ArtistController extends AbstractController
 {
@@ -50,6 +51,8 @@ class ArtistController extends AbstractController
     }
 
     #[Route('/artists/add', name: 'artist_add', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function add(
         Request $request,
         EntityManagerInterface $entityManager
@@ -76,6 +79,8 @@ class ArtistController extends AbstractController
     }
 
     #[Route('/artist/delete/{id}', name: 'artist_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function delete(
         int $id,
         ArtistRepository $artistRepository,
@@ -110,6 +115,8 @@ class ArtistController extends AbstractController
     }
 
     #[Route('/artist/edit/{id}', name: 'artist_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_EDITOR')]
     public function edit(
         Request $request,
         Artist $artist,
