@@ -168,6 +168,7 @@
                             <i class="bi bi-arrow-left"></i> Back
                         </a>
                     {% endif %}
+
                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
                         <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn-action btn-edit">
                             <i class="bi bi-pencil"></i> Edit

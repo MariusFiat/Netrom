@@ -49,6 +49,7 @@ final class EditionsController extends AbstractController
         return $this->render('editions.html.twig', [
             'editions' => $editions,
             'festival' => $festival,
+            'user' => $this->getUser(),
         ]);
     }
 

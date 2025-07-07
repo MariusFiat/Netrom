@@ -26,7 +26,6 @@ class UserType extends AbstractType
                 ],
                 'label' => 'Email Address'
             ])
-
             ->add('mainRole', ChoiceType::class, [
                 'mapped' => false,
                 'data' => $builder->getData()->getMainRole(),

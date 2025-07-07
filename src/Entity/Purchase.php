@@ -20,7 +20,7 @@ class Purchase
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user_id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Festival::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Festival $festival_id = null;
 

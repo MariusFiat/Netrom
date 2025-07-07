@@ -228,6 +228,15 @@
                             </div>
                         </td>
                     {% endif %}
+                    {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_EDITOR') %}
+                    <td class="action-buttons">
+                        <div class="d-flex">
+                        <a href="{{ path('buy_ticket', {'id': user.id, 'festival_id': festival.id}) }}" class="btn-action btn-edit">
+                            <i class="bi bi-ticket-perforated"></i> Buy Ticket
+                        </a>
+                        </div>
+                    </td>
+                    {% endif %}
                 </tr>
                 <tr>
                     <td colspan="4">

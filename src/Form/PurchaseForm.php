@@ -2,22 +2,36 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Purchase;
+use App\Entity\Ticket;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class PurchaseForm extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('is_used', CheckboxType::class, [
+                'label' => 'Is Used?',
+                'required' => false,
+            ])
+            ->add('ticket_type_id', EntityType::class, [
+                'class' => Ticket::class,
+                'choice_label' => function (Ticket $ticket) {
+                    return sprintf('%s - $%.2f', $ticket->getType(), $ticket->getPrice());
+                },
+                'label' => 'Ticket Type',
+            ]);
+    }
 
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Purchase::class,
+        ]);
     }
 }
