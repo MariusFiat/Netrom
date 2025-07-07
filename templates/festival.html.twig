@@ -271,8 +271,10 @@
             {{ knp_pagination_render(festivals) }}
         </div>
 
-        <a href="{{ path('add_festival') }}" class="add-festival-btn" title="Add New Festival">
-            <i class="bi bi-plus"></i>
-        </a>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+            <a href="{{ path('add_festival') }}" class="add-festival-btn" title="Add New Festival">
+                <i class="bi bi-plus"></i>
+            </a>
+        {% endif %}
     </div>
 {% endblock %}
