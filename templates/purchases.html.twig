@@ -125,8 +125,10 @@
             </div>
         {% endif %}
 
-        <a href="{{ path('user_show', {'id': user.id}) }}" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Back to User Details
-        </a>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+            <a href="{{ path('user_show', {'id': user.id}) }}" class="btn-back">
+                <i class="bi bi-arrow-left"></i> Back to User Details
+            </a>
+        {% endif %}
     </div>
 {% endblock %}

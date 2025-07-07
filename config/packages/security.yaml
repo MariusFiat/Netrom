@@ -22,8 +22,9 @@ security:
 
     # Add role hierarchy
     role_hierarchy:
-        ROLE_ADMIN: ROLE_EDITOR
-        ROLE_EDITOR: ROLE_USER
+        ROLE_ADMIN: ROLE_ADMIN
+        ROLE_EDITOR: ROLE_EDITOR
+        ROLE_USER: ROLE_USER
 
     # Uncomment and modify these to protect routes
 #    access_control:

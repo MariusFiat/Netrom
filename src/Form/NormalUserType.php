@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class UserType extends AbstractType
+class NormalUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -25,18 +25,6 @@ class UserType extends AbstractType
                     'placeholder' => 'user@example.com'
                 ],
                 'label' => 'Email Address'
-            ])
-
-            ->add('mainRole', ChoiceType::class, [
-                'mapped' => false,
-                'data' => $builder->getData()->getMainRole(),
-                'attr' => ['class' => 'form-control'],
-                'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Editor' => 'ROLE_EDITOR',
-                    'Admin' => 'ROLE_ADMIN'
-                ],
-                'label' => 'User Role'
             ])
             ->add('userDetails', UserDetailsType::class, [
                 'label' => false,

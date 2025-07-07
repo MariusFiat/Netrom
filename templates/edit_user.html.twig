@@ -67,7 +67,10 @@
 
         {{ form_start(form) }}
         {{ form_row(form.email) }}
-        {{ form_row(form.mainRole) }}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            {{ form_row(form.mainRole) }}
+        {% endif %}
 
         {% if form.userDetails is defined %}
             <h3 class="mt-4">User Details</h3>

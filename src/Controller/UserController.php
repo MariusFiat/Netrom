@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\NormalUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -100,7 +101,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/edit/{id}', name: 'user_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if (!$this->getUser()) { //block any access without login
@@ -114,6 +115,34 @@ class UserController extends AbstractController
             // Handle roles separately
             $selectedRole = $form->get('mainRole')->getData();
             $user->setRoles([$selectedRole]);
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'User updated successfully!');
+            return $this->redirectToRoute('user_show', ['id' => $user->getId()]);
+        }
+
+        return $this->render('edit_user.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/users/edit_normal/{id}', name: 'normal_user_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function editUser(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->getUser()) { //block any access without login
+            return $this->redirectToRoute('app_login');
+        }
+
+        $form = $this->createForm(NormalUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handle roles separately
+//            $selectedRole = $form->get('mainRole')->getData();
+//            $user->setRoles([$selectedRole]);
 
             $entityManager->flush();
 
