@@ -235,6 +235,8 @@
                                     <a href="{{ path('buy_ticket', {'id': user.id, 'festival_id': festival.id}) }}" class="btn-action btn-edit">
                                         <i class="bi bi-ticket-perforated"></i> Buy Ticket
                                     </a>
+                                    {%  else  %}
+                                    Not available
                                 {% endif %}
                             </div>
                         </td>

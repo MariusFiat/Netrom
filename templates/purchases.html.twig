@@ -104,6 +104,18 @@
     <div class="purchases-container">
         <h1>Purchases for {{ user.email }}</h1>
 
+        {# Flash messages #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         {% if purchases|length > 0 %}
             {% for purchase in purchases %}
                 <div class="card purchase-card">

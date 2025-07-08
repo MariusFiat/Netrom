@@ -77,6 +77,18 @@
 
     <!-- Main Content -->
     <div class="home-container">
+        {# Flash messages #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <h1 class="home-title">Home Page</h1>
         <p class="home-subtitle">Welcome to our Festival Management System</p>
 
@@ -84,9 +96,11 @@
             <a href="{{ path('list_festivals') }}" class="home-link home-link-primary">
                 <i class="bi bi-calendar-event"></i> View Festivals
             </a>
-            <a href="{{ path('user_list') }}" class="home-link home-link-secondary">
-                <i class="bi bi-people"></i> View Users
-            </a>
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+                <a href="{{ path('user_list') }}" class="home-link home-link-secondary">
+                    <i class="bi bi-people"></i> View Users
+                </a>
+            {% endif %}
         </div>
     </div>
 

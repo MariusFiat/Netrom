@@ -82,12 +82,24 @@
 
         html, body {
             height: 100%;
-            background-color: #228B22;
+            background-color: #228B22 !important;
         }
     </style>
 
     <div class="purchases-container">
         <h1>Buy Ticket for {{ festival.name }}</h1>
+
+        {# Flash messages #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
 
         <div class="card purchase-card">
             <div class="card-header purchase-card-header">

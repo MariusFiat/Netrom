@@ -119,6 +119,19 @@
     <div class="user-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>Users List</h1>
+            
+            {# Flash messages #}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
             <div class="search-container">
                 <form method="get" action="{{ path('user_list') }}" class="search-form">
                     <input type="text"

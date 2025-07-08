@@ -117,6 +117,18 @@
     <div class="user-details-container">
         <h1>User Details</h1>
 
+        {# Flash messages #}
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <div class="card user-card">
             <div class="card-header user-card-header">
                 <h2 class="mb-0">{{ user.email }}</h2>

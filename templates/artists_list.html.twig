@@ -216,7 +216,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Music Genre</th>
-{#                <th>Editions</th>#}
+
                 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
                     <th>Actions</th>
                 {% endif %}
@@ -228,13 +228,7 @@
                     <td>{{ artist.id }}</td>
                     <td>{{ artist.name }}</td>
                     <td>{{ artist.musicGenre }}</td>
-{#                    <td>#}
-{#                        {% if artist.editions is not empty %}#}
-{#                            {{ artist.editions|length }}#}
-{#                        {% else %}#}
-{#                            0#}
-{#                        {% endif %}#}
-{#                    </td>#}
+
                     {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
                         <td>
                             <div class="d-flex gap-2 justify-content-center">

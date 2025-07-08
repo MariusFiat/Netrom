@@ -16,6 +16,21 @@ class FestivalRepository extends ServiceEntityRepository
         parent::__construct($registry, Festival::class);
     }
 
+    public function isNameUnique(string $name, ?int $excludeId = null): bool
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
+            ->where('f.name = :name')
+            ->setParameter('name', $name);
+
+        if ($excludeId) {
+            $qb->andWhere('f.id != :excludeId')
+                ->setParameter('excludeId', $excludeId);
+        }
+
+        return $qb->getQuery()->getSingleScalarResult() === 0;
+    }
+
     //    /**
     //     * @return Festival[] Returns an array of Festival objects
     //     */

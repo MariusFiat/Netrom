@@ -103,7 +103,7 @@ final class FestivalController extends AbstractController
     //* Create form
     #[Route('/festival/add', name: 'add_festival')]
     #[IsGranted('ROLE_EDITOR')]
-    public function new(Request $request, EntityManagerInterface $em,): Response
+    public function new(Request $request, EntityManagerInterface $em, FestivalRepository $festivalRepository): Response
     {
         if (!$this->getUser()) { //block any access without login
             return $this->redirectToRoute('app_login');
@@ -115,6 +115,11 @@ final class FestivalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$festivalRepository->isNameUnique($newFestival->getName())) {
+                $this->addFlash('error', 'A festival with this name already exists!');
+                return $this->redirectToRoute('add_festival'); // Redirect back to form
+            }
+
             $em->persist($newFestival);
             $em->flush();
 
@@ -130,7 +135,7 @@ final class FestivalController extends AbstractController
 //    Edit method:
     #[Route('/festival/{id}/edit', name: 'edit_festival', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_EDITOR')]
-    public function edit(Request $request, Festival $festival, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Festival $festival, EntityManagerInterface $entityManager, FestivalRepository $festivalRepository): Response
     {
         if (!$this->getUser()) { //block any access without login
             return $this->redirectToRoute('app_login');
@@ -140,6 +145,15 @@ final class FestivalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$festivalRepository->isNameUnique($festival->getName(), $festival->getId())) {
+                $this->addFlash('error', 'A festival with this name already exists!');
+
+                return $this->render('edit_festival.html.twig', [
+                    'festival' => $festival,
+                    'form' => $form->createView()
+                ]);
+            }
+
             $entityManager->flush();
 
             $this->addFlash('success', 'Festival updated successfully!');
