@@ -57,7 +57,6 @@ final class FestivalController extends AbstractController
 
     //Metoda de delete
     #[Route('/festival/delete/{id}', name: 'delete_festival')]
-    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('ROLE_EDITOR')]
     public function delete(
         int $id,
@@ -103,7 +102,6 @@ final class FestivalController extends AbstractController
 
     //* Create form
     #[Route('/festival/add', name: 'add_festival')]
-    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('ROLE_EDITOR')]
     public function new(Request $request, EntityManagerInterface $em,): Response
     {
@@ -131,7 +129,6 @@ final class FestivalController extends AbstractController
 
 //    Edit method:
     #[Route('/festival/{id}/edit', name: 'edit_festival', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('ROLE_EDITOR')]
     public function edit(Request $request, Festival $festival, EntityManagerInterface $entityManager): Response
     {

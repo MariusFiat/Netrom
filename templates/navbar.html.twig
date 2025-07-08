@@ -23,7 +23,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ app.request.get('_route') starts with 'stage' ? 'active' : '' }}" href="{{ path('stage_list') }}">Stages</a>
                 </li>
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EDITOR') %}
+                {% if is_granted('ROLE_ADMIN')%}
                     <li class="nav-item">
                         <a class="nav-link {{ app.request.get('_route') starts with 'user' ? 'active' : '' }}" href="{{ path('user_list') }}">Users</a>
                     </li>

@@ -22,7 +22,7 @@ class PurchaseForm extends AbstractType
             ->add('ticket_type_id', EntityType::class, [
                 'class' => Ticket::class,
                 'choice_label' => function (Ticket $ticket) {
-                    return sprintf('%s - $%.2f', $ticket->getType(), $ticket->getPrice());
+                    return sprintf('%s - %.2f lei', $ticket->getType(), $ticket->getPrice());
                 },
                 'label' => 'Ticket Type',
             ]);

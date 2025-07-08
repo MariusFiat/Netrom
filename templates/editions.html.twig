@@ -229,13 +229,15 @@
                         </td>
                     {% endif %}
                     {% if not is_granted('ROLE_ADMIN') and not is_granted('ROLE_EDITOR') %}
-                    <td class="action-buttons">
-                        <div class="d-flex">
-                        <a href="{{ path('buy_ticket', {'id': user.id, 'festival_id': festival.id}) }}" class="btn-action btn-edit">
-                            <i class="bi bi-ticket-perforated"></i> Buy Ticket
-                        </a>
-                        </div>
-                    </td>
+                        <td class="action-buttons">
+                            <div class="d-flex">
+                                {% if edition.endDate|date('Y-m-d') >= "now"|date('Y-m-d') %}
+                                    <a href="{{ path('buy_ticket', {'id': user.id, 'festival_id': festival.id}) }}" class="btn-action btn-edit">
+                                        <i class="bi bi-ticket-perforated"></i> Buy Ticket
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
                     {% endif %}
                 </tr>
                 <tr>

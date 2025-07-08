@@ -54,7 +54,6 @@ final class EditionsController extends AbstractController
     }
 
     #[Route('/festival/{festival_id}/edition/add', name: 'add_edition', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
     #[IsGranted('ROLE_EDITOR')]
     public function addEdition(
         int $festival_id,
